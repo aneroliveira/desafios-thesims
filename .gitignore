@@ -1,0 +1,13 @@
+# vercel
+.vercel
+
+# configurações locais do Claude Code
+.claude/settings.local.json
+
+# arte original em alta (o site usa a versão otimizada em assets/arte-oficial.jpg)
+4c5c5a57-df7e-448f-b24e-328c70068b77.png
+
+# misc
+.DS_Store
+Thumbs.db
+node_modules

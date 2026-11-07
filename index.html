@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A Sereia Esposa-Troféu</title>
+  <meta name="description" content="Painel de acompanhamento do desafio de The Sims 4 A Sereia Esposa-Troféu." />
+  <meta name="theme-color" content="#06213a" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233fd0c9'/%3E%3Cstop offset='1' stop-color='%239b8cff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M32 56C19 56 8 47 8 34 8 20 19 8 32 8s24 12 24 26c0 13-11 22-24 22z' fill='url(%23g)'/%3E%3Cpath d='M32 56V18M32 56 20 22M32 56l12-34M32 56 13 34M32 56l19-22' stroke='%23fff' stroke-width='2.5' fill='none' stroke-linecap='round' opacity='.8'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Fundo oceânico animado -->
+  <div class="ocean" aria-hidden="true">
+    <div class="ocean__rays"></div>
+    <div class="ocean__bubbles" id="bubbles"></div>
+    <svg class="ocean__waves" viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0 60c120 30 240 30 360 0s240-30 360 0 240 30 360 0 240-30 360 0v60H0z" />
+    </svg>
+  </div>
+
+  <div class="app">
+    <!-- Barra superior (celular/tablet) -->
+    <header class="topbar">
+      <button class="icon-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="sidebar"></button>
+      <a href="#inicio" class="brand brand--compact">
+        <span class="brand__mark" data-icon="shell"></span>
+        <span class="brand__name">Sereia Esposa-Troféu</span>
+      </a>
+      <div class="topbar__pct" id="topbarPct">0%</div>
+    </header>
+
+    <!-- Menu lateral -->
+    <aside class="sidebar" id="sidebar" aria-label="Menu principal">
+      <a href="#inicio" class="brand">
+        <span class="brand__mark" data-icon="shell"></span>
+        <span>
+          <span class="brand__name">A Sereia</span>
+          <span class="brand__sub">Esposa-Troféu</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav"></nav>
+
+      <div class="sidebar__progress" id="sidebarProgress"></div>
+
+      <div class="sidebar__tools">
+        <button class="btn btn--ghost btn--sm" id="exportBtn"></button>
+        <label class="btn btn--ghost btn--sm" id="importLabel">
+          <input type="file" id="importInput" accept="application/json,.json" hidden />
+        </label>
+        <button class="btn btn--danger-ghost btn--sm" id="resetBtn"></button>
+      </div>
+    </aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="main" id="view" tabindex="-1"></main>
+  </div>
+
+  <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+  <div class="modal-root" id="modalRoot"></div>
+
+  <!-- Ilustração da sereia -->
+  <template id="tpl-mermaid">
+    <svg class="mermaid-art" viewBox="0 0 320 400" role="img" aria-label="Ilustração de uma sereia sentada sobre uma pérola">
+      <defs>
+        <radialGradient id="mMoon" cx="50%" cy="45%" r="55%">
+          <stop offset="0" stop-color="#bff6ef" stop-opacity=".55" />
+          <stop offset=".55" stop-color="#5fd6d0" stop-opacity=".18" />
+          <stop offset="1" stop-color="#5fd6d0" stop-opacity="0" />
+        </radialGradient>
+        <linearGradient id="mTail" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#3fd0c9" />
+          <stop offset=".55" stop-color="#2aa3b8" />
+          <stop offset="1" stop-color="#9b8cff" />
+        </linearGradient>
+        <linearGradient id="mFin" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#9b8cff" />
+          <stop offset="1" stop-color="#ff9fc6" />
+        </linearGradient>
+        <linearGradient id="mHair" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ff8fb8" />
+          <stop offset="1" stop-color="#b35bd1" />
+        </linearGradient>
+        <linearGradient id="mSkin" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffd9c4" />
+          <stop offset="1" stop-color="#f3b99c" />
+        </linearGradient>
+        <radialGradient id="mPearl" cx="35%" cy="30%" r="70%">
+          <stop offset="0" stop-color="#ffffff" />
+          <stop offset=".6" stop-color="#e9e3ff" />
+          <stop offset="1" stop-color="#b7a9f2" />
+        </radialGradient>
+        <linearGradient id="mGold" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ffe7a3" />
+          <stop offset="1" stop-color="#d9a441" />
+        </linearGradient>
+        <pattern id="mScales" width="14" height="10" patternUnits="userSpaceOnUse">
+          <path d="M0 10a7 7 0 0 1 14 0" fill="none" stroke="#ffffff" stroke-opacity=".28" stroke-width="1.2" />
+          <path d="M-7 5a7 7 0 0 1 14 0M7 5a7 7 0 0 1 14 0" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="1.2" />
+        </pattern>
+      </defs>
+
+      <circle cx="160" cy="180" r="160" fill="url(#mMoon)" />
+
+      <!-- concha-trono -->
+      <g transform="translate(160 330)">
+        <path d="M-120 20C-120-40-60-78 0-78S120-40 120 20z" fill="url(#mGold)" opacity=".35" />
+        <path d="M0 20-96-12M0 20-58-56M0 20 0-76M0 20 58-56M0 20 96-12" stroke="#ffe7a3" stroke-opacity=".45" stroke-width="3" />
+      </g>
+
+      <!-- cabelo (atrás) -->
+      <path class="m-hair" d="M122 92c-16 30-14 74 2 104 8 15 2 34-10 46 26-4 40-26 40-50l-6-40zM198 92c16 30 22 78 6 112-6 14 0 30 12 40-28-2-44-24-44-48l2-40z" fill="url(#mHair)" />
+
+      <!-- cauda -->
+      <g class="m-tail">
+        <path d="M128 196c-6 34 4 64 30 86 22 19 52 26 62 52 4 10 2 20-4 26l16 4c10-16 10-36-2-54-14-22-40-34-52-56-10-18-8-40-6-58z" fill="url(#mTail)" />
+        <path d="M128 196c-6 34 4 64 30 86 22 19 52 26 62 52 4 10 2 20-4 26l16 4c10-16 10-36-2-54-14-22-40-34-52-56-10-18-8-40-6-58z" fill="url(#mScales)" />
+        <path class="m-fin" d="M216 360c-30 2-56 14-66 34 24-6 46-6 66-16 6 18 26 28 54 26-12-18-30-36-54-44z" fill="url(#mFin)" opacity=".95" />
+        <path d="M216 360c-20 8-38 18-48 30M222 362c10 14 24 24 40 30" stroke="#fff" stroke-opacity=".5" stroke-width="1.5" fill="none" />
+      </g>
+
+      <!-- quadril / cintura -->
+      <path d="M130 192c10 6 52 6 62 0l2 12c-14 8-52 8-66 0z" fill="#ffe7a3" opacity=".85" />
+
+      <!-- tronco -->
+      <path d="M140 128c-8 18-12 40-12 66 12 6 54 6 66 0 0-26-4-48-12-66z" fill="url(#mSkin)" />
+      <!-- braços -->
+      <path d="M141 132c-14 8-22 26-18 46 2 10 12 14 18 6 2-12 2-28 6-40z" fill="url(#mSkin)" />
+      <path d="M181 132c14 8 26 24 30 40 2 8-6 14-12 8-6-10-14-24-22-34z" fill="url(#mSkin)" />
+      <!-- top de conchas -->
+      <path d="M140 156c2-12 18-14 22-2-4 6-18 8-22 2zM160 154c4-12 20-10 22 2-4 6-18 6-22-2z" fill="#9b8cff" />
+      <path d="M144 154l6-6M151 156v-8M158 154l-4-6M164 154l6-6M171 156v-8M178 154l-4-6" stroke="#e9e3ff" stroke-width="1.2" stroke-linecap="round" />
+      <!-- colar de pérolas -->
+      <g fill="url(#mPearl)">
+        <circle cx="146" cy="134" r="3" /><circle cx="152" cy="138" r="3" /><circle cx="159" cy="140" r="3.4" />
+        <circle cx="166" cy="140" r="3.4" /><circle cx="173" cy="138" r="3" /><circle cx="179" cy="134" r="3" />
+      </g>
+
+      <!-- pescoço e cabeça -->
+      <path d="M154 112h14v18h-14z" fill="#f3b99c" />
+      <ellipse cx="161" cy="94" rx="24" ry="27" fill="url(#mSkin)" />
+      <!-- franja -->
+      <path d="M136 92c-2-26 14-42 32-40 18 2 30 18 26 42-8-12-18-20-30-22-8 10-18 16-28 20z" fill="url(#mHair)" />
+      <!-- rosto -->
+      <path d="M149 98c3 3 7 3 10 0M166 98c3 3 7 3 10 0" stroke="#5a3550" stroke-width="2" fill="none" stroke-linecap="round" />
+      <ellipse cx="148" cy="106" rx="5" ry="3" fill="#ff8fb8" opacity=".45" />
+      <ellipse cx="176" cy="106" rx="5" ry="3" fill="#ff8fb8" opacity=".45" />
+      <path d="M157 111c3 3 7 3 10 0" stroke="#c45a7a" stroke-width="2" fill="none" stroke-linecap="round" />
+      <!-- tiara -->
+      <path d="M140 66l8 8 6-14 7 12 7-12 6 14 8-8-4 14h-34z" fill="url(#mGold)" />
+      <circle cx="161" cy="66" r="3.2" fill="url(#mPearl)" />
+      <!-- estrela do mar no cabelo -->
+      <path d="M190 80l2.6 5.4 6 .6-4.4 4 1.2 6-5.4-3-5.4 3 1.2-6-4.4-4 6-.6z" fill="#ff9f7a" />
+
+      <!-- pérola grande -->
+      <circle class="m-pearl" cx="96" cy="300" r="20" fill="url(#mPearl)" />
+      <!-- brilhos -->
+      <g class="m-sparkles" fill="#fff">
+        <path d="M250 110l3 8 8 3-8 3-3 8-3-8-8-3 8-3z" />
+        <path d="M70 160l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" />
+        <path d="M262 236l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" />
+      </g>
+    </svg>
+  </template>
+
+  <script src="js/data.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
