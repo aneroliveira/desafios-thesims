@@ -13,6 +13,8 @@ Painel pessoal para acompanhar o desafio de The Sims 4 **A Sereia Esposa-Troféu
 
 ## Deploy (Vercel)
 
+**No ar:** https://desafios-thesims.vercel.app
+
 Site estático: sem build, sem dependências. O Vercel serve os arquivos como estão
 (`vercel.json` só define cache e cabeçalhos). Cada `git push` na branch `main` publica de novo.
 

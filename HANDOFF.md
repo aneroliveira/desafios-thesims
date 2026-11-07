@@ -6,7 +6,8 @@ progresso, regras, patrimônio e diário da jogatina.
 | | |
 | --- | --- |
 | **Repositório** | https://github.com/aneroliveira/desafios-thesims (branch `main`) |
-| **Deploy** | Vercel, via integração com o GitHub (importação do projeto pendente — ver “Próximos passos”) |
+| **Site no ar** | https://desafios-thesims.vercel.app |
+| **Deploy** | Vercel, via integração com o GitHub — cada push na `main` publica automaticamente |
 | **Stack** | HTML + CSS + JavaScript puro, sem build e sem dependências |
 | **Persistência** | LocalStorage do navegador (chave `sereia-esposa-trofeu:v1`) |
 | **Rodar local** | Dois cliques em `index.html` **ou** `npx http-server -p 5173` |
@@ -57,6 +58,7 @@ progresso, regras, patrimônio e diário da jogatina.
 - `vercel.json` (só cache e cabeçalhos; sem build), `.gitignore`, seção de deploy no README.
 - Repositório Git criado na branch `main` e enviado para o GitHub (`aneroliveira/desafios-thesims`), seguindo o padrão dos outros projetos (pokestudio, agendador_reunioes).
 - O PNG original em alta (2,4 MB) ficou **fora do repositório** — o site usa a versão otimizada.
+- Projeto importado no Vercel e publicado em **https://desafios-thesims.vercel.app**. Conferido no ar: páginas e imagens carregam (200), cabeçalhos de cache do `vercel.json` aplicados e marcação de objetivos salvando no navegador.
 
 ---
 
@@ -133,6 +135,6 @@ Formato salvo (`sereia-esposa-trofeu:v1`):
 
 ## Próximos passos
 
-- [ ] Importar o repositório no Vercel (vercel.com/new → `desafios-thesims` → Framework Preset **Other**, sem build) e conferir o site publicado.
+- [x] Importar o repositório no Vercel e conferir o site publicado (07/11/2026).
 - [ ] Migrar o progresso local para o site publicado com Exportar/Importar, se já houver marcações.
 - [ ] Futuro (previsto no briefing): login e banco de dados — a troca fica concentrada em `js/storage.js`.
